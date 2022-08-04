@@ -9,28 +9,22 @@ part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherInitialState()) {
-    on<WeatherEvent>((event, emit) {
-      // TODO: implement event handler
+    on<WeatherEvent>((event, emit) {});
+    on<WeatherFetchEvent>((event, emit) {
+      setData(event);
     });
+    on<WeatherLoadEvent>(((event, emit) => WeatherLoadingState()));
   }
+
   @override
   WeatherState get initialState => WeatherInitialState();
 
-  @override
-  Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
-    if (event is WeatherFetchEvent) {
-      yield WeatherLoadingState();
-
-      try {
-        NetworkData weather = await NetworkData(event.city).getData(event.city);
-
-        yield WeatherLoadedState(weather);
-      } catch (_) {
-        yield WeatherErrorState();
-      }
-      if (event is WeatherRest) {
-        yield WeatherInitialState();
-      }
+  Future<Object> setData(event) async {
+    try {
+      Weather weatherData = await NetworkData(event.city).getData(event.city);
+      return WeatherLoadedState(weatherData);
+    } catch (_) {
+      return WeatherErrorState();
     }
   }
 }

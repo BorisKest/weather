@@ -36,51 +36,49 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
+  Widget screenState(context, state) {
+    var result;
+    if (state is WeatherInitialState) {
+      result = const Text('not good');
+    }
+
+    if (state is WeatherLoadingState) {
+      result = const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (state is WeatherLoadedState) {
+      result = Column(children: [
+        Text(
+          cityName,
+          style: const TextStyle(fontSize: 20),
+        ),
+        const Divider(),
+        iconRow(Icons.thermostat, temperature + state.weatherData[index].temp),
+        iconRow(Icons.water_drop, humidity + state.weatherData[index].humidity),
+        iconRow(
+            Icons.wind_power, windSpeed + state.weatherData[index].windSpeed),
+      ]);
+    }
+
+    if (state is WeatherErrorState) {
+      result = const Text(' BAD');
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
-        if (state is WeatherInitialState) {
-          return const Center(
-            child: Text('No data'),
-          );
-        }
-
-        if (state is WeatherLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (state is WeatherLoadedState) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Text(
-                    cityName,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  const Divider(),
-                  iconRow(Icons.thermostat,
-                      temperature + state.weather[index].temp),
-                  iconRow(Icons.water_drop,
-                      humidity + state.weather[index].humidity),
-                  iconRow(Icons.wind_power,
-                      windSpeed + state.weather[index].windSpeed),
-                ],
-              ),
-            ),
-          );
-        }
-
-        if (state is WeatherErrorState) {
-          return const Text('fail'); //snack here...
-        }
-
-        return Text('010');
+        return Scaffold(
+          appBar: AppBar(),
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: screenState(context, state),
+          ),
+        );
       },
     );
   }

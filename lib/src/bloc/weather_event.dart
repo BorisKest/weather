@@ -2,8 +2,7 @@ part of 'weather_bloc.dart';
 
 @immutable
 class WeatherEvent extends Equatable {
-  const WeatherEvent();
-
+  @override
   List<Object> get props => [];
 }
 

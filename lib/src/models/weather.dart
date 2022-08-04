@@ -1,7 +1,7 @@
 class Weather {
-  double temp;
-  double humidity;
-  double windSpeed;
+  final temp;
+  final humidity;
+  final windSpeed;
 
   Weather({
     required this.temp,
@@ -11,9 +11,9 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
-      temp: json['temp'],
-      humidity: json['humidity'],
-      windSpeed: json['windSpeed'],
+      temp: json["temp"],
+      humidity: json['main/humidity'],
+      windSpeed: json['wind/Speed'],
     );
   }
 }
