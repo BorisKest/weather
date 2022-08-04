@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/src/bloc/weather_bloc.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({Key? key}) : super(key: key);
@@ -15,6 +15,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String temperature = 'Temperature :';
   String humidity = 'Humidity :';
   String windSpeed = 'wingSpeed :';
+
+  int index = 0;
 
   Widget iconRow(icon, text) {
     return Padding(
@@ -36,23 +38,50 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Text(
-              cityName,
-              style: const TextStyle(fontSize: 20),
+    return BlocBuilder<WeatherBloc, WeatherState>(
+      builder: (context, state) {
+        if (state is WeatherInitialState) {
+          return const Center(
+            child: Text('No data'),
+          );
+        }
+
+        if (state is WeatherLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is WeatherLoadedState) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Text(
+                    cityName,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  const Divider(),
+                  iconRow(Icons.thermostat,
+                      temperature + state.weather[index].temp),
+                  iconRow(Icons.water_drop,
+                      humidity + state.weather[index].humidity),
+                  iconRow(Icons.wind_power,
+                      windSpeed + state.weather[index].windSpeed),
+                ],
+              ),
             ),
-            const Divider(),
-            iconRow(Icons.thermostat, temperature),
-            iconRow(Icons.water_drop, humidity),
-            iconRow(Icons.wind_power, windSpeed),
-          ],
-        ),
-      ),
+          );
+        }
+
+        if (state is WeatherErrorState) {
+          return const Text('fail'); //snack here...
+        }
+
+        return Text('010');
+      },
     );
   }
 }

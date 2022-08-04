@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WeatherBloc _bloc = BlocProvider.of(context);
+    WeatherBloc _bloc = BlocProvider.of<WeatherBloc>(context);
     return BlocProvider<WeatherBloc>(
       create: ((context) => WeatherBloc()),
       child: Scaffold(
@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ElevatedButton(
                 onPressed: (() {
+                  _bloc.add(WeatherFetchEvent(_controller.text));
                   Navigator.of(context).pushNamed('/weatherScreen');
                 }),
                 child: const Text('Confirm'),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/src/UI/home_screan.dart';
 import 'package:weather/src/UI/weather_screan.dart';
 import 'package:weather/src/bloc/weather_bloc.dart';
+import 'package:weather/src/services/weather_api_provider.dart';
 
 class AppRouter {
   final WeatherBloc _correntBloc = WeatherBloc();
