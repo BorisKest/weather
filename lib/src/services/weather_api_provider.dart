@@ -12,17 +12,18 @@ class NetworkData {
   static const uriApi = 'https://pro.openweathermap.org/data/2.5/forecast';
 
   Future getData(city) async {
+    WeatherBloc().add(WeatherLoadEvent());
     http.Response response = await http.Client().get(
       Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?q=$city&APPID=43ea6baaad7663dc17637e22ee6f78f2'),
+          'https://api.openweathermap.org/data/2.5/weather?q=$city&APPID=$apiKey'),
     );
 
     if (response.statusCode == 200) {
       final weatherJson = json.decode(response.body);
-      WeatherBloc().add(WeatherLoadEvent());
+      print(weatherJson);
       return Weather.fromJson(weatherJson);
     } else {
-      throw Exception('Ошибка получения данных');
+      WeatherBloc().add(WearherLoadFail());
     }
   }
 }

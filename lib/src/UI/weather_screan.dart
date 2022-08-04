@@ -55,10 +55,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
           style: const TextStyle(fontSize: 20),
         ),
         const Divider(),
-        iconRow(Icons.thermostat, temperature + state.weatherData[index].temp),
-        iconRow(Icons.water_drop, humidity + state.weatherData[index].humidity),
-        iconRow(
-            Icons.wind_power, windSpeed + state.weatherData[index].windSpeed),
+        iconRow(Icons.thermostat, temperature + state.weatherData.temp),
+        iconRow(Icons.water_drop, humidity + state.weatherData.humidity),
+        iconRow(Icons.wind_power, windSpeed + state.weatherData.windSpeed),
       ]);
     }
 

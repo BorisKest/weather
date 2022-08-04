@@ -17,3 +17,5 @@ class WeatherFetchEvent extends WeatherEvent {
 class WeatherRest extends WeatherEvent {}
 
 class WeatherLoadEvent extends WeatherEvent {}
+
+class WearherLoadFail extends WeatherEvent {}

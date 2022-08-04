@@ -11,6 +11,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherInitialState()) {
     on<WeatherEvent>((event, emit) {});
     on<WeatherFetchEvent>((event, emit) {
+      emit(WeatherLoadingState());
       setData(event);
     });
     on<WeatherLoadEvent>(((event, emit) => WeatherLoadingState()));
@@ -19,12 +20,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   @override
   WeatherState get initialState => WeatherInitialState();
 
-  Future<Object> setData(event) async {
+  void setData(event) async {
     try {
       Weather weatherData = await NetworkData(event.city).getData(event.city);
-      return WeatherLoadedState(weatherData);
+      emit(WeatherLoadedState(weatherData));
     } catch (_) {
-      return WeatherErrorState();
+      emit(WeatherErrorState());
     }
   }
 }
