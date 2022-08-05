@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WeatherBloc _bloc = BlocProvider.of<WeatherBloc>(context);
+    WeatherBloc bloc = BlocProvider.of<WeatherBloc>(context);
     return BlocProvider<WeatherBloc>(
       create: ((context) => WeatherBloc()),
       child: Scaffold(
@@ -38,6 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Weather',
+                  style: TextStyle(fontSize: 38),
+                ),
+              ),
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -51,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ElevatedButton(
                 onPressed: (() {
-                  _bloc.add(WeatherFetchEvent(_controller.text));
+                  bloc.add(WeatherFetchEvent(_controller.text));
                   Navigator.of(context).pushNamed('/weatherScreen');
                 }),
                 child: const Text('Confirm'),

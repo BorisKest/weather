@@ -10,11 +10,9 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  @override
-  String cityName = 'City ';
-  String temperature = 'Temperature :';
-  String humidity = 'Humidity :';
-  String windSpeed = 'wingSpeed :';
+  String temperature = 'Temperature: ';
+  String humidity = 'Humidity: ';
+  String windSpeed = 'wingSpeed: ';
 
   bool showSnackBarTriger = false;
 
@@ -42,36 +40,36 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     double snackBarPosition = mediaQueryData.size.height / 2.5;
-    var result;
+    dynamic result;
 
     return BlocConsumer<WeatherBloc, WeatherState>(builder: (context, state) {
-      return Scaffold(
-          appBar: AppBar(),
-          body: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: result,
-          ));
-    }, listener: (context, state) {
-      if (state is WeatherLoadingState || state is WeatherInitialState) {
+      if (state is WeatherLoadingState) {
         result = const Center(
           child: CircularProgressIndicator(),
         );
       }
-
+      return Scaffold(
+        appBar: AppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: result,
+        ),
+      );
+    }, listener: (context, state) {
       if (state is WeatherLoadedState) {
         result = Column(
           children: [
             Text(
-              cityName,
+              state.weatherData.city,
               style: const TextStyle(fontSize: 20),
             ),
             const Divider(),
-            iconRow(Icons.thermostat,
-                temperature + state.weatherData.temp.toString()),
-            iconRow(Icons.water_drop,
-                humidity + state.weatherData.humidity.toString()),
+            iconRow(
+                Icons.thermostat, '$temperature${state.weatherData.temp} °C'),
+            iconRow(
+                Icons.water_drop, '$humidity${state.weatherData.humidity} %'),
             iconRow(Icons.wind_power,
-                windSpeed + state.weatherData.windSpeed.toString()),
+                '$windSpeed${state.weatherData.windSpeed} mps'),
           ],
         );
       }
@@ -83,7 +81,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               bottom: snackBarPosition,
               left: 20.0,
               right: 20.0),
-          content: const Text('Ошибка получения данных'),
+          content: Text('Ошибка получения данных: ${state.error}'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }

@@ -8,13 +8,16 @@ class WeatherInitialState extends WeatherState {}
 class WeatherLoadingState extends WeatherState {}
 
 class WeatherLoadedState extends WeatherState {
-  final weatherData;
+  final Weather weatherData;
 
   WeatherLoadedState(this.weatherData);
 
-  NetworkData get getData => weatherData;
+  Weather get getData => weatherData;
 
   List<Object> get props => [weatherData];
 }
 
-class WeatherErrorState extends WeatherState {}
+class WeatherErrorState extends WeatherState {
+  final String error;
+  WeatherErrorState(this.error);
+}

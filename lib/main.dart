@@ -20,6 +20,7 @@ class _WeatherAppState extends State<WeatherApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: _appRouter.onGenerateRoute,
     );
   }

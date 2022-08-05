@@ -20,10 +20,9 @@ class NetworkData {
 
     if (response.statusCode == 200) {
       final weatherJson = json.decode(response.body);
-      print(weatherJson);
       return Weather.fromJson(weatherJson);
     } else {
-      WeatherBloc().add(WearherLoadFail());
+      WeatherBloc().add(WearherLoadFail(response.statusCode.toString()));
     }
   }
 }

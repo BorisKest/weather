@@ -17,7 +17,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     on<WeatherLoadEvent>(((event, emit) => WeatherLoadingState()));
   }
 
-  @override
   WeatherState get initialState => WeatherInitialState();
 
   void setData(event) async {
@@ -25,7 +24,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       Weather weatherData = await NetworkData(event.city).getData(event.city);
       emit(WeatherLoadedState(weatherData));
     } catch (_) {
-      emit(WeatherErrorState());
+      emit(WeatherErrorState('Failed to get data'));
     }
   }
 }

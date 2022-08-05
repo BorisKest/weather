@@ -7,7 +7,7 @@ class WeatherEvent extends Equatable {
 }
 
 class WeatherFetchEvent extends WeatherEvent {
-  final city;
+  final String city;
   WeatherFetchEvent(this.city);
 
   @override
@@ -18,4 +18,10 @@ class WeatherRest extends WeatherEvent {}
 
 class WeatherLoadEvent extends WeatherEvent {}
 
-class WearherLoadFail extends WeatherEvent {}
+class WearherLoadFail extends WeatherEvent {
+  final String error;
+  WearherLoadFail(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
