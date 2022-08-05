@@ -74,6 +74,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
         );
       }
       if (state is WeatherErrorState) {
+        result = const Center(
+            child: Icon(
+          Icons.error_sharp,
+          size: 50,
+          color: Colors.blue,
+        ));
         var snackBar = SnackBar(
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(
