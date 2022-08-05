@@ -29,31 +29,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WeatherBloc _bloc = BlocProvider.of(context);
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'City',
+    WeatherBloc bloc = BlocProvider.of<WeatherBloc>(context);
+    return BlocProvider<WeatherBloc>(
+      create: ((context) => WeatherBloc()),
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  'Weather',
+                  style: TextStyle(fontSize: 38),
+                ),
               ),
-              controller: _controller,
-            ),
-            Divider(
-              color: dividerColor,
-              thickness: thickness,
-            ),
-            ElevatedButton(
-              onPressed: (() {
-                Navigator.of(context).pushNamed('/weatherScreen');
-              }),
-              child: const Text('Confirm'),
-            ),
-          ],
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'City',
+                ),
+                controller: _controller,
+              ),
+              Divider(
+                color: dividerColor,
+                thickness: thickness,
+              ),
+              ElevatedButton(
+                onPressed: (() {
+                  bloc.add(WeatherFetchEvent(_controller.text));
+                  Navigator.of(context).pushNamed('/weatherScreen');
+                }),
+                child: const Text('Confirm'),
+              ),
+            ],
+          ),
         ),
       ),
     );
